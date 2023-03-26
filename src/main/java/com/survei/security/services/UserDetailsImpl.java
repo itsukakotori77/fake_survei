@@ -47,9 +47,8 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        String role = roles.toString();
-        if(StringUtils.hasText(role)) {
-            String[] splits = role.replaceAll(" ", "").split(",");
+        if(StringUtils.hasText(roles)) {
+            String[] splits = roles.replaceAll(" ", "").split(",");
             for(String string : splits){
                 authorities.add(new SimpleGrantedAuthority(string));
             }
