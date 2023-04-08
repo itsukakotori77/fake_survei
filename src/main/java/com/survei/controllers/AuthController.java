@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.survei.dtos.JwtResponseDto;
 import com.survei.dtos.LoginDto;
 import com.survei.dtos.SignUpDto;
 import com.survei.entities.User;
 import com.survei.security.jwt.JwtUtils;
-import com.survei.security.services.UserDetailsImpl;
 import com.survei.services.UserService;
 
 @RestController
@@ -77,6 +75,7 @@ public class AuthController
             User user = modelMapper.map(request, User.class);
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setRoles("user");
+            user.setStatus(true);
             User created = userService.save(user);
 
             map.put("code", "00");

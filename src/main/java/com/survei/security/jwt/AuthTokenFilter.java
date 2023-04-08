@@ -1,6 +1,8 @@
 package com.survei.security.jwt;
 
 import java.io.IOException;
+import java.util.Map;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.survei.security.services.UserDetailsServiceImpl;
 
+import io.jsonwebtoken.JwtParser;
+
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
@@ -30,21 +34,28 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String jwt = parseJwt(request);
         try {
-            String jwt = parseJwt(request);
             if(jwt != null && jwtUtils.validateJwtToken(jwt)){
     
                 // Get JWT
-                String username = jwtUtils.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                // String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                Map<String, Object> jwtParse = jwtUtils.getClaims(jwt);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(jwtParse.get("username").toString());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, 
+                    null, 
+                    userDetails.getAuthorities()
+                );
                 
                 // Set Authentication
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            logger.error("Gagal: {}", e.getMessage());
+            // String username = jwtUtils.getUserNameFromJwtToken(jwt);
+            Map<String, Object> jwtParse = jwtUtils.getClaims(jwt);
+            logger.error("Gagal: {}", jwtParse.get("username").toString());
         }
 
         filterChain.doFilter(request, response);

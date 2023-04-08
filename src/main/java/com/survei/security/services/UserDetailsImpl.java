@@ -3,14 +3,11 @@ package com.survei.security.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.survei.entities.User;
-import com.survei.models.Role;
 import org.springframework.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +22,8 @@ import lombok.Setter;
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
+    private Long id;
+
     private String username;
 
     private String email;
@@ -37,6 +36,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user){
         return new UserDetailsImpl(
+            user.getId(),
             user.getUsername(),
             user.getEmail(),
             user.getPassword(),

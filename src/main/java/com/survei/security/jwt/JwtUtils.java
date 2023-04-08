@@ -70,4 +70,10 @@ public class JwtUtils {
             .getBody()
             .getSubject();
     }
+
+    public Map<String, Object> getClaims(String token){
+        return Jwts.parser().setSigningKey(jwtSecret)
+            .parseClaimsJws(token)
+            .getBody();
+    }
 }
