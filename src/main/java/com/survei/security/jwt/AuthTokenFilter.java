@@ -54,8 +54,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             // String username = jwtUtils.getUserNameFromJwtToken(jwt);
-            Map<String, Object> jwtParse = jwtUtils.getClaims(jwt);
-            logger.error("Gagal: {}", jwtParse.get("username").toString());
+            // Map<String, Object> jwtParse = jwtUtils.getClaims(jwt);
+            logger.error("Gagal: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);
