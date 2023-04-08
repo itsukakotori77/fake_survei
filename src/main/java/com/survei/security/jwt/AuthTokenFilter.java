@@ -18,8 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.survei.security.services.UserDetailsServiceImpl;
 
-import io.jsonwebtoken.JwtParser;
-
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
