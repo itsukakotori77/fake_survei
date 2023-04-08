@@ -92,4 +92,20 @@ public class AuthController
         }
     }
 
+    public ResponseEntity<?> logout()
+    {
+        Map<String, Object> map = new LinkedHashMap<String, Object>(); 
+
+        try {
+            map.put("code", "00");
+            map.put("message", "berhasil logout");
+            return ResponseEntity.status(HttpStatus.OK).body(map);
+            
+        } catch (Exception e) {
+            map.put("code", "01");
+            map.put("message", "terjadi kesalahan pada proses logout");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+        }
+    }
+
 }

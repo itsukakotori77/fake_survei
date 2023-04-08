@@ -3,7 +3,6 @@ package com.survei.security.jwt;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,9 +29,7 @@ public class JwtUtils {
 
     public Boolean validateJwtToken(String authToken){
         try {
-            Jwts.parser().setSigningKey(jwtSecret)
-                .parseClaimsJws(authToken);
-    
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT Signature: {}", e.getMessage());
@@ -76,4 +73,9 @@ public class JwtUtils {
             .parseClaimsJws(token)
             .getBody();
     }
+
+    // public ResponseCookie getCleanJwtCookie() {
+    //     ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
+    //     return cookie;
+    // }
 }
